@@ -1,0 +1,40 @@
+# Project data and generated outputs
+**/data/
+**/derivatives/
+**/results/
+**/logs/
+
+# Data and model artifacts
+*.csv
+*.tsv
+*.h5
+*.hdf5
+*.mat
+*.pkl
+*.pickle
+*.npy
+*.npz
+
+# These project inputs should be versioned
+!/glove_embeddings.csv
+!/sig_elec.csv
+
+# Logs and scheduler output
+*.log
+*.out
+*.err
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local environments and secrets
+.conda/
+.venv/
+venv/
+.env
+.env.*
