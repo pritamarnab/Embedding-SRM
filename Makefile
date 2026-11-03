@@ -1,6 +1,13 @@
 # Run all commands in one shell
 .ONESHELL:
 
+# 1) first run the pickling step (make data-pickling) to generate the data for SRM
+# 2) then run the eSRM step (make model-srm) to generate figures for eSRM denoising
+# and across subject encoding
+# 3) For the pooling analysis, run make srm-aug to generate the data for pooling analysis
+# and then run make plotting-pooling to generate the figures for pooling analysis
+
+
 
 
 %-pickling: subjects ?=  625 676 798	 ## 625 676 7170 798
@@ -161,54 +168,3 @@ plotting-pooling:
 		--num_random_run $(num_random_run) \
 		$(if $(zero_shot),--zero_shot) \
 		--data_size $(data_size); \
-
-
-
-
-
-
-
-
-
-%-emb: subjects ?=  625 676 798	 ## 625 676 7170 798
-%-emb: window_length = 500  ## 200 ms
-%-emb: model_alignment= 'glove50'  ## 'glove50'|'gpt2-xl'
-%-emb: model_downstream= 'glove50'  ## 'glove50'|'gpt2-xl'
-%-emb: lags ?= 250 	#0 50 100 #
-%-emb: production = 0        ## 1 means production, 0 means comprehension
-%-emb: elec_list = 'new_path'   ## 'old_path'|'new_path'|'erp-corr'
-%-emb: srm_k = 10  ## number of srm features
-# %-emb: org= --original_srm_encoding
-# %-emb: across= --across_subject_with_replacing_srm
-%-emb: plotting = --plotting
-%-emb: mat_file_saving = --mat_file_saving
-%-emb: folds = 10
-# %-srm: CMD = sbatch --job-name=model_srm-sub-proportion-$(production) submit.sh
-%-emb: CMD = sbatch --job-name=model_srm-$(shell date +%Y%m%d-%H%M%S)-diff_emb-$(production) submit.sh
-# %-srm: CMD = python 
-# %-srm: CMD = echo
-# %-srm: JOB_NAME = $(subst /,-,$(desired_fold))
-# %-srm: CMD = sbatch --job-name=$(production)-$(JOB_NAME)-across submit.sh
-
-
-
-diff-emb:
-
-	$(CMD) /scratch/gpfs/HASSON/arnab/model_based_srm/diff_embedding_space.py\
-    --production $(production) \
-    --subject $(subjects) \
-    --window_length $(window_length) \
-    --lags $(lags) \
-    --elec_list $(elec_list) \
-    --srm_k $(srm_k) \
-    --folds $(folds) \
-	--model_alignment $(model_alignment) \
-	--model_downstream $(model_downstream) \
-	$(if $(plotting),$(plotting)) \
-	$(if $(mat_file_saving),$(mat_file_saving)); \
-
-%-all: CMD = sbatch submit.sh
-
-podcast-encoding-all:
-
-	$(CMD) /scratch/gpfs/HASSON/arnab/model_based_srm/superecog_srm/podcast_all_elec_encoding.py
