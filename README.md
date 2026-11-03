@@ -17,8 +17,8 @@ For Mac users, please see the detailed instructions for installing BrainIAK here
 
  ## Usage
 
- For the Podcast data use [`esrm_podcast.ipynb`]
+ For the Podcast data use [`esrm_podcast.ipynb`](esrm_podcast.ipynb)
 
- For 24/7 data: follow the instructions in the makefile
+ For 24/7 data: follow the instructions in the ['makefile'](Makefile)
 
 
