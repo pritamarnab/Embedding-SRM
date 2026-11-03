@@ -7,7 +7,7 @@
 # 3) For the pooling analysis, run make srm-aug to generate the data for pooling analysis
 # and then run make plotting-pooling to generate the figures for pooling analysis
 
-
+PROJECT_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
 
 %-pickling: subjects ?=  625 676 798	 ## 625 676 7170 798
@@ -24,7 +24,7 @@
 
 data-pickling:
 	
-		$(CMD) /scratch/gpfs/HASSON/arnab/Embedding-SRM/pickling.py\
+		$(CMD) $(PROJECT_DIR)/pickling.py \
 		--production $(production) \
 		--subject $(subjects) \
 		--window_length $(window_length) \
@@ -66,7 +66,7 @@ data-pickling:
 
 model-srm:
 
-	$(CMD) /scratch/gpfs/HASSON/arnab/Embedding-SRM/csrm_ecog_2.py\
+	$(CMD) $(PROJECT_DIR)/csrm_ecog_2.py\
     --production $(production) \
     --subject $(subjects) \
     --window_length $(window_length) \
@@ -91,7 +91,7 @@ model-srm:
 random-srm:
 
 	for i in {1..5}; do \
-		$(CMD) /scratch/gpfs/HASSON/arnab/model_based_srm/csrm_ecog_2.py \
+		$(CMD) $(PROJECT_DIR)/csrm_ecog_2.py \
 		--production $(production) \
 		--subject $(subjects) \
 		--window_length $(window_length) \
@@ -133,7 +133,7 @@ random-srm:
 srm-aug:
 
 	for i in $(data_size); do \
-		$(CMD) /scratch/gpfs/HASSON/arnab/Embedding-SRM/low_data_regime.py \
+		$(CMD) $(PROJECT_DIR)/low_data_regime.py \
 		--subject $(subjects) \
 		--production $(production) \
 		--lags $(lags) \
@@ -162,7 +162,7 @@ srm-aug:
 plotting-pooling:
 
 	
-		$(CMD) /scratch/gpfs/HASSON/arnab/Embedding-SRM/plotting_pooling.py \
+		$(CMD) $(PROJECT_DIR)/plotting_pooling.py \
 		--production $(production) \
 		--srm_k $(srm_k) \
 		--num_random_run $(num_random_run) \
